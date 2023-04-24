@@ -1,11 +1,13 @@
 const express = require('express')
 const morgan = require("morgan")
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
 app.use(morgan('tiny'))
+app.use(cors())
 
-let phonebook = [
+let persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -29,20 +31,20 @@ let phonebook = [
 ]
 
 
-let a = phonebook.length;
+let a = persons.length;
  
 
-app.get('/api/phonebook', (request, response) => {
-    response.json(phonebook)
+app.get('/api/persons', (request, response) => {
+    response.json(persons)
   })
 
 app.get('/info', (request, response) => {
     response.send('<p>The phonebook has info for '+ a +' people.</p>\n'+ Date())
   })
 
-app.get('/api/phonebook/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const pb = phonebook.find(pb => pb.id === id)
+    const pb = persons.find(pb => pb.id === id)
     if (pb) {
       response.json(pb)
     } else {
@@ -50,21 +52,21 @@ app.get('/api/phonebook/:id', (request, response) => {
     }
   })
 
-app.delete('/api/phonebook/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    phonebook = phonebook.filter(pb => pb.id !== id)
+    persons = persons.filter(pb => pb.id !== id)
   
     response.status(204).end()
   })
 
-app.post('/api/phonebook', (request, response) => {
+app.post('/api/persons', (request, response) => {
 /*     const maxId = phonebook.length > 0
       ? Math.max(...phonebook.map(p => p.id)) 
       : 0 */
     
     const randoId = Math.floor(Math.random() * 11000)
     const pb = request.body
-    const duplcateName = phonebook.find(p => p.name === pb.name)
+    const duplcateName = persons.find(p => p.name === pb.name)
     
     pb.id = randoId
     
@@ -93,9 +95,9 @@ app.post('/api/phonebook', (request, response) => {
                                       return obj;
                                         }, {})
     
-    phonebook = phonebook.concat(opb)
+    persons = persons.concat(opb)
 
-    response.json(phonebook)
+    response.json(persons)
   })
 
 const PORT = 3001
