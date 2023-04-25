@@ -21,3 +21,10 @@ primary_region = "ewr"
     interval = "15s"
     timeout = "2s"
     grace_period = "5s"
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080 
+  processes = ["app"]

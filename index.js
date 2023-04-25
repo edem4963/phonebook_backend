@@ -101,6 +101,6 @@ app.post('/api/persons', (request, response) => {
     response.json(persons)
   })
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || "8080";
 app.listen(port)
 console.log(`Server running on port ${port}`)
